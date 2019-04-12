@@ -1,0 +1,40 @@
+{
+  "name": "dojo-clean-code-solid",
+  "version": "1.0.0",
+  "description": "An introduction to Clean Code / Architecture in disguise.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "npm run serve",
+    "build": "npm run build-ts && npm run tslint",
+    "serve": "node dist/server.js",
+    "watch-node": "nodemon dist/server.js",
+    "test": "jest --forceExit --coverage --verbose",
+    "watch-test": "npm run test -- --watchAll",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasFerro/dojo-clean-code-solid.git"
+  },
+  "keywords": [
+    "dojo",
+    "clean-code",
+    "typescript",
+    "ts",
+    "node",
+    "express"
+  ],
+  "author": "Thomas Ferro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ThomasFerro/dojo-clean-code-solid/issues"
+  },
+  "homepage": "https://github.com/ThomasFerro/dojo-clean-code-solid#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.11",
+    "tslint": "^5.15.0",
+    "typescript": "^3.4.3"
+  }
+}

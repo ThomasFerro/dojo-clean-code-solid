@@ -3,3 +3,5 @@
 /dist
 
 .sonarlint
+
+**/.DS_Store

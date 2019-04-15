@@ -8,6 +8,10 @@ export class AgentsService {
         this.agentsRepository = agentsRepository;
     }
 
+    public async addAgent(agent: Agent): Promise<boolean> {
+        return await this.agentsRepository.add(agent);
+    }
+
     public async getAllAgents(): Promise<Agent[]> {
         return await this.agentsRepository.findAll();
     }

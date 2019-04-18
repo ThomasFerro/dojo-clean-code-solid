@@ -16,7 +16,7 @@ export class AgentsService {
         return await this.agentsRepository.findAll();
     }
 
-    public async getAgentInformation(id: string): Promise<Agent|null> {
+    public async getAgentInformation(id: string): Promise<Agent | undefined> {
         return await this.agentsRepository.findById(id);
     }
 }

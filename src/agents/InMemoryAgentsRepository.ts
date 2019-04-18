@@ -17,7 +17,7 @@ export class InMemoryAgentsRepository implements AgentsRepository {
         return this.agents;
     }
 
-    public async findById(id: string): Promise<Agent | null> {
-        return this.agents.find((agent) => agent.getId() === id) || null;
+    public async findById(id: string): Promise<Agent | undefined> {
+        return this.agents.find((agent) => agent.getId() === id) || undefined;
     }
 }

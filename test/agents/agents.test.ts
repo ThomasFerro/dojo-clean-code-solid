@@ -26,7 +26,7 @@ describe("agents", () => {
     });
 
     it("should not provide information for an unknown agent", async () => {
-        expect(await agentsService.getAgentInformation("liquid-snake")).toBeNull();
+        expect(await agentsService.getAgentInformation("liquid-snake")).toBeUndefined();
     });
 
     it("should add an agent to the list", async () => {

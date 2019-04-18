@@ -51,4 +51,15 @@ describe("missions", () => {
         zanzibarLandMission.setEndDate(new Date().getTime());
         expect(await missionsService.getAgentCurrentMission("solid-snake")).toBeUndefined();
     });
+
+    it("should create a new mission with the provided informations", async () => {
+        const nakedSnake = new Agent("naked-snake");
+        const dremuchijMission = new Mission("dremuchij", "Dremuchij", nakedSnake);
+
+        await missionsService.addMission(dremuchijMission);
+
+        expect(await missionsService.getAgentMissions("naked-snake")).toEqual([
+            dremuchijMission,
+        ]);
+    });
 });

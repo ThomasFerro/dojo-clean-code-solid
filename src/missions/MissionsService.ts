@@ -1,4 +1,7 @@
 import { Mission } from "./Mission";
+import { MissionConflict } from "./MissionConflict";
+import { hasAlreadyAMissionWithinThisPeriod } from "./MissionPolicies";
+import { getMissionWithinPeriod } from "./MissionsHelpers";
 import { MissionsRepository } from "./MissionsRepository";
 
 export class MissionsService {
@@ -9,6 +12,15 @@ export class MissionsService {
     }
 
     public async addMission(mission: Mission): Promise<boolean> {
+        // TODO : Validate mission
+
+        if (hasAlreadyAMissionWithinThisPeriod(
+            await this.getAgentMissions(mission.getAgent().getId()),
+            mission,
+        )) {
+            throw new MissionConflict(mission);
+        }
+
         return await this.missionsRepository.add(mission);
     }
 
@@ -25,14 +37,7 @@ export class MissionsService {
     }
 
     public async getAgentCurrentMission(agentId: string): Promise<Mission | undefined> {
-        return (await this.getAgentMissions(agentId)).find(
-            (mission) => {
-                const currentDate = (new Date()).getTime();
-                const endDate = mission.getEndDate();
-
-                return mission.getStartDate() < currentDate &&
-                    (!endDate || endDate > currentDate);
-            },
-        );
+        const currentDate = (new Date()).getTime();
+        return getMissionWithinPeriod(await this.getAgentMissions(agentId), currentDate, currentDate);
     }
 }

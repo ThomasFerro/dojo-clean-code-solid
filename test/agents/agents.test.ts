@@ -17,22 +17,24 @@ describe("agents", () => {
         agentsService = new AgentsService(agentsRepository);
     });
 
-    it("should provide the list of all agents", async () => {
-        expect(await agentsService.getAllAgents()).toEqual(agents);
-    });
+    describe("data", () => {
+        it("should provide the list of all agents", async () => {
+            expect(await agentsService.getAllAgents()).toEqual(agents);
+        });
 
-    it("should provide the information about a specific agent", async () => {
-        expect(await agentsService.getAgentInformation("solid-snake")).toEqual(agents[0]);
-    });
+        it("should provide the information about a specific agent", async () => {
+            expect(await agentsService.getAgentInformation("solid-snake")).toEqual(agents[0]);
+        });
 
-    it("should not provide information for an unknown agent", async () => {
-        expect(await agentsService.getAgentInformation("liquid-snake")).toBeUndefined();
-    });
+        it("should not provide information for an unknown agent", async () => {
+            expect(await agentsService.getAgentInformation("liquid-snake")).toBeUndefined();
+        });
 
-    it("should add an agent to the list", async () => {
-        const newAgent = new Agent("liquid-snake");
-        await agentsService.addAgent(newAgent);
+        it("should add an agent to the list", async () => {
+            const newAgent = new Agent("liquid-snake");
+            await agentsService.addAgent(newAgent);
 
-        expect(await agentsService.getAgentInformation(newAgent.getId())).toEqual(newAgent);
+            expect(await agentsService.getAgentInformation(newAgent.getId())).toEqual(newAgent);
+        });
     });
 });

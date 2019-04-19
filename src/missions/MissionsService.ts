@@ -1,6 +1,7 @@
+import { InvalidMission } from "./errors/InvalidMission";
+import { MissionConflict } from "./errors/MissionsConflict";
 import { Mission } from "./Mission";
-import { MissionConflict } from "./MissionConflict";
-import { hasAlreadyAMissionWithinThisPeriod } from "./MissionPolicies";
+import { hasAlreadyAMissionWithinThisPeriod, isMissionValid } from "./MissionPolicies";
 import { getMissionWithinPeriod } from "./MissionsHelpers";
 import { MissionsRepository } from "./MissionsRepository";
 
@@ -12,7 +13,9 @@ export class MissionsService {
     }
 
     public async addMission(mission: Mission): Promise<boolean> {
-        // TODO : Validate mission
+        if (!isMissionValid(mission)) {
+            throw new InvalidMission(mission);
+        }
 
         if (hasAlreadyAMissionWithinThisPeriod(
             await this.getAgentMissions(mission.getAgent().getId()),

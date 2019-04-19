@@ -1,6 +1,11 @@
 import { Mission } from "./Mission";
 import { getMissionWithinPeriod } from "./MissionsHelpers";
 
+export const isMissionValid = (mission: Mission): boolean => {
+    // TODO : Add check -> isAgentValid
+    return !!(mission && mission.getId() && mission.getAgent() && mission.getStartDate());
+};
+
 export const hasAlreadyAMissionWithinThisPeriod = (
     agentMissions: Mission[],
     newMission: Mission,

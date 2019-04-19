@@ -1,7 +1,8 @@
 import { Agent } from "../../src/agents/Agent";
+import { InvalidMission } from "../../src/missions/errors/InvalidMission";
+import { MissionConflict } from "../../src/missions/errors/MissionsConflict";
 import { InMemoryMissionsRepository } from "../../src/missions/InMemoryMissionsRepository";
 import { Mission } from "../../src/missions/Mission";
-import { MissionConflict } from "../../src/missions/MissionConflict";
 import { MissionsRepository } from "../../src/missions/MissionsRepository";
 import { MissionsService } from "../../src/missions/MissionsService";
 
@@ -63,6 +64,18 @@ describe("missions", () => {
             expect(await missionsService.getAgentMissions("naked-snake")).toEqual([
                 dremuchijMission,
             ]);
+        });
+
+        it("should not be able to create an invalid mission", async () => {
+            const tselinoyarskMission = new Mission(
+                "",
+                "Tselinoyarsk",
+                nakedSnake,
+            );
+
+            await expect(missionsService.addMission(tselinoyarskMission))
+                .rejects.toEqual(new InvalidMission(tselinoyarskMission));
+
         });
 
         it("should not be able to create a mission within the same period", async () => {

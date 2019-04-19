@@ -1,4 +1,4 @@
-import { Mission } from "./Mission";
+import { Mission } from "../Mission";
 
 export class MissionConflict implements Error {
     public name: string;

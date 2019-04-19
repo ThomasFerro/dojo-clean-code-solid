@@ -1,6 +1,7 @@
 import { Agent } from "../../src/agents/Agent";
 import { AgentsRepository } from "../../src/agents/AgentsRepository";
 import { AgentsService } from "../../src/agents/AgentsService";
+import { InvalidAgent } from "../../src/agents/errors/InvalidAgent";
 import { InMemoryAgentsRepository } from "../../src/agents/InMemoryAgentsRepository";
 
 const agents: Agent[] = [];
@@ -35,6 +36,13 @@ describe("agents", () => {
             await agentsService.addAgent(newAgent);
 
             expect(await agentsService.getAgentInformation(newAgent.getId())).toEqual(newAgent);
+        });
+
+        it("should not be able to create an invalid agent", async () => {
+            const nakedSnake = new Agent("");
+
+            await expect(agentsService.addAgent(nakedSnake))
+                .rejects.toEqual(new InvalidAgent(nakedSnake));
         });
     });
 });

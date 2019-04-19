@@ -1,5 +1,7 @@
 import { Agent } from "./Agent";
+import { isAgentValid } from "./AgentPolicies";
 import { AgentsRepository } from "./AgentsRepository";
+import { InvalidAgent } from "./errors/InvalidAgent";
 
 export class AgentsService {
     private agentsRepository: AgentsRepository;
@@ -9,6 +11,10 @@ export class AgentsService {
     }
 
     public async addAgent(agent: Agent): Promise<boolean> {
+        if (!isAgentValid(agent)) {
+            throw new InvalidAgent(agent);
+        }
+
         return await this.agentsRepository.add(agent);
     }
 

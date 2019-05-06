@@ -29,8 +29,8 @@ describe("backed missions", () => {
         ];
 
         backedMissionRepository = new InMemoryBackedMissionsRepository();
-        backedMissions.forEach(async (mission) => await backedMissionRepository.add(mission));
         backedMissionService = new BackedMissionsService(backedMissionRepository);
+        backedMissions.forEach(async (mission) => await backedMissionService.addMission(mission));
     });
 
     it("should provide the list of all backed missions", async () => {

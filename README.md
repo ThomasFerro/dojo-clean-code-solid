@@ -8,36 +8,16 @@ A Coding Dojo based on the universe of Metal Gear Solid. Five exercises will be 
 
 ### Single Responsibility Principle
 
-> "A class should have only one reason to change." Robert C. Martin.
+#### Solution
 
-Think of the last time you tried to debug that particular method that was responsible of :
+In order to simplify the `MissionsService`, I have created a class responsible for the policies linked to a mission.
 
-1. Checking if there is enough coffee and water left;
-2. Prepare the coffee if the first condition is fulfilled;
-3. Pour the coffee and the milk if necessary;
-4. Add sugar; and
-5. Notify the user that his coffee is ready !
+Here, this `MissionPolicies` class exposes two pure methods: `isMissionValid` and `hasAlreadyAMissionWithinThisPeriod`.
 
-All of that in the `CoffeeService` !
+The `MissionsService` can then focus on his primary responsability, and simply call the policies when needed.
 
-Now, imagine a world where all the coffee business is managed by the `CoffeeService`, the sugar business by the `SugarService`, and so on..
-
-Wouldn't it be nice ? Easily testable and debuggable ?
-
-This is the philosophy behind the **Single Responsibility Principle**, every part of the code should be responsible for one thing and it should be very talented at doing it !
-
-**Transmission received...**
+Checkout into the Dojo's second part's branch :
 
 ```
-Snake, we have found your first target.
-
-This is a common case of a junk room class ! Clean it by making sure that the responsibilities are at the right place.
+git checkout exercise-2
 ```
-
-#### Exercise
-
-Checkout into the `exercise-1` branch.
-
-Try to clean up the `addMission` in the `MissionService` by splitting the responsabilities in different classes.
-
-You will find a solution to this exercise in the `exercise-1-solution` branch.

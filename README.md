@@ -6,30 +6,38 @@ A Coding Dojo based on the universe of Metal Gear Solid. Five exercises will be 
 
 ## Dojo
 
-### Interface Segregation Principle
+### Dependency Inversion Principle
 
-#### Solution
+> "High level modules should not depend upon low level modules. Both should depend upon abstractions." Robert C. Martin.
 
-I have splitted the `Repository` into three interfaces. This way, every implementation can choose which action they want to provide, depending on their specifications :
+> "Abstractions should not depend upon details. Details should depend upon abstraction." Robert C. Martin.
 
-```
-export interface Add<T> {
-    add(element: T): Promise<boolean>;
-}
+This may be the least expansive principle to apply.
 
-export interface FindAll<T> {
-    findAll(): Promise<T[]>;
-}
+If you are not already convinced that you should always depends on abstraction (abstract classes or interfaces), try to think of the last time you have committed to this specific database, let us say *MongoDB*.
 
-export interface FindById<T, K> {
-    findById(id: K): Promise<T | undefined>;
-}
-```
+You build your entire application with explicit references to this provider, using the technology as it's full potential.
 
-And now, the team can simple add a new `delete` interface and make their repository implements what they need !
+Then, right before the shipping, your boss tells you that a contract has been signed with Microsoft to use *Microsoft SQL Server*, and that you **have to** use this database !
 
-Checkout into the Dojo's fifth part's branch :
+Now you have to search for every *MongoDB* reference in the codebase, replacing it with the new provider... And, of course, you have used specific features that is not available in the new provider !
+
+This is a common case where the **Dependency Inversion Principle** can save you hours, even days !
+
+In the previous example, instead of referencing *MongoDB*, an abstract **Repository** would have been used, later implemented with the chosen provider. This way, changing a provider can be simply done by adding a new implementation, and configure the application to use this one instead.
 
 ```
-git checkout exercise-5
+One last thing to greatly improve our project and you will be free to go.
+
+The team wants to be able to try numerous technical choices before deciding which one to use in production.
+
+To do so, we need to rethink our application to remove any explicit references !
 ```
+
+#### Exercise 
+
+Checkout into the `exercise-5` branch.
+
+The `AgentsService` make explicit reference to an implementation of the `AgentsRepository`. Abstract the used repository.
+
+You will find a solution to this exercise in the `exercise-5-solution` branch.

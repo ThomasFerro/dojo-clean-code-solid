@@ -1,25 +1,30 @@
+import { isAgentValid } from "../agents/AgentPolicies";
 import { InvalidMission } from "./errors/InvalidMission";
 import { MissionConflict } from "./errors/MissionsConflict";
+import { InMemoryMissionsRepository } from "./InMemoryMissionsRepository";
 import { Mission } from "./Mission";
-import { hasAlreadyAMissionWithinThisPeriod, isMissionValid } from "./MissionPolicies";
 import { getMissionWithinPeriod } from "./MissionsHelpers";
-import { MissionsRepository } from "./MissionsRepository";
 
 export class MissionsService {
-    private missionsRepository: MissionsRepository;
+    private missionsRepository: InMemoryMissionsRepository;
 
-    constructor(missionsRepository: MissionsRepository) {
+    constructor(missionsRepository: InMemoryMissionsRepository) {
         this.missionsRepository = missionsRepository;
     }
 
     public async addMission(mission: Mission): Promise<boolean> {
-        if (!isMissionValid(mission)) {
+        if (!mission
+            || !mission.getId() ||
+            !isAgentValid(mission.getAgent()) ||
+            !mission.getStartDate()
+        ) {
             throw new InvalidMission(mission);
         }
 
-        if (hasAlreadyAMissionWithinThisPeriod(
+        if (getMissionWithinPeriod(
             await this.getAgentMissions(mission.getAgent().getId()),
-            mission,
+            mission.getStartDate(),
+            mission.getEndDate(),
         )) {
             throw new MissionConflict(mission);
         }

@@ -7,7 +7,7 @@ import { MissionsRepository } from "../../src/missions/MissionsRepository";
 import { MissionsService } from "../../src/missions/MissionsService";
 
 describe("missions", () => {
-    let missionsRepository: MissionsRepository;
+    let missionsRepository: InMemoryMissionsRepository;
     let missionsService: MissionsService;
 
     let solidSnake: Agent;

@@ -32,7 +32,7 @@ describe("missions", () => {
 
         missionsRepository = new InMemoryMissionsRepository();
         missions.forEach(async (mission) => await missionsRepository.add(mission));
-        missionsService = new MissionsService(missionsRepository, new InMemoryBackedMissionsRepository());
+        missionsService = new MissionsService(missionsRepository);
     });
 
     describe("data", () => {

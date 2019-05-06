@@ -1,13 +1,12 @@
 import { Agent } from "../../src/agents/Agent";
 import { BackedMission } from "../../src/missions/backedMissions/BackedMission";
 import { BackedMissionsRepository } from "../../src/missions/backedMissions/BackedMissionsRepository";
+import { BackedMissionsService } from "../../src/missions/backedMissions/BackedMissionsService";
 import { InMemoryBackedMissionsRepository } from "../../src/missions/backedMissions/InMemoryBackedMissionsRepository";
-import { InMemoryMissionsRepository } from "../../src/missions/InMemoryMissionsRepository";
-import { MissionsService } from "../../src/missions/MissionsService";
 
 describe("backed missions", () => {
     let backedMissionRepository: BackedMissionsRepository;
-    let backedMissionService: MissionsService;
+    let backedMissionService: BackedMissionsService;
 
     let backedMissions: BackedMission[];
 
@@ -31,15 +30,15 @@ describe("backed missions", () => {
 
         backedMissionRepository = new InMemoryBackedMissionsRepository();
         backedMissions.forEach(async (mission) => await backedMissionRepository.add(mission));
-        backedMissionService = new MissionsService(new InMemoryMissionsRepository(), backedMissionRepository);
+        backedMissionService = new BackedMissionsService(backedMissionRepository);
     });
 
     it("should provide the list of all backed missions", async () => {
-        expect(await backedMissionService.getAllBackedMissions()).toEqual(backedMissions);
+        expect(await backedMissionService.getAllMissions()).toEqual(backedMissions);
     });
 
     it("should provide the mission of an agent when he is a backup", async () => {
-        expect(await backedMissionService.getAgentBackedMissions("meryl-silverburgh")).toContain(shadowMosesMission);
+        expect(await backedMissionService.getAgentMissions("meryl-silverburgh")).toContain(shadowMosesMission);
     });
 
     it("should be able to remove a backup from a mission", async () => {

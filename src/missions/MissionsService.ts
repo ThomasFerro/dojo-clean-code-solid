@@ -1,3 +1,6 @@
+import { BackedMission } from "./backedMissions/BackedMission";
+import { isAgentInBackup } from "./backedMissions/BackedMissionsHelpers";
+import { BackedMissionsRepository } from "./backedMissions/BackedMissionsRepository";
 import { InvalidMission } from "./errors/InvalidMission";
 import { MissionConflict } from "./errors/MissionsConflict";
 import { InMemoryMissionsRepository } from "./InMemoryMissionsRepository";
@@ -7,9 +10,11 @@ import { getMissionWithinPeriod } from "./MissionsHelpers";
 
 export class MissionsService {
     private missionsRepository: InMemoryMissionsRepository;
+    private backedMissionsRepository: BackedMissionsRepository;
 
-    constructor(missionsRepository: InMemoryMissionsRepository) {
+    constructor(missionsRepository: InMemoryMissionsRepository, backedMissionsRepository: BackedMissionsRepository) {
         this.missionsRepository = missionsRepository;
+        this.backedMissionsRepository = backedMissionsRepository;
     }
 
     public async addMission(mission: Mission): Promise<boolean> {
@@ -42,5 +47,25 @@ export class MissionsService {
     public async getAgentCurrentMission(agentId: string): Promise<Mission | undefined> {
         const currentDate = (new Date()).getTime();
         return getMissionWithinPeriod(await this.getAgentMissions(agentId), currentDate, currentDate);
+    }
+
+    public async getAllBackedMissions(): Promise<Mission[]> {
+        return await this.backedMissionsRepository.findAll();
+    }
+
+    public async getAgentBackedMissions(agentId: string): Promise<Mission[]> {
+        return await this.backedMissionsRepository.findByAgent(agentId);
+    }
+
+    public async getBackedMissionInformation(missionId: string): Promise<BackedMission | undefined> {
+        return await this.backedMissionsRepository.findById(missionId);
+    }
+
+    public async removeBackupFromMission(mission: BackedMission, backupId: string): Promise<boolean> {
+        if (!isAgentInBackup(backupId, mission)) {
+            return false;
+        }
+
+        return this.backedMissionsRepository.removeBackup(mission.getId(), backupId);
     }
 }

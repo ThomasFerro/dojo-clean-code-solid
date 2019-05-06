@@ -1,4 +1,5 @@
 import { Agent } from "../../src/agents/Agent";
+import { InMemoryBackedMissionsRepository } from "../../src/missions/backedMissions/InMemoryBackedMissionsRepository";
 import { InvalidMission } from "../../src/missions/errors/InvalidMission";
 import { MissionConflict } from "../../src/missions/errors/MissionsConflict";
 import { InMemoryMissionsRepository } from "../../src/missions/InMemoryMissionsRepository";
@@ -31,7 +32,7 @@ describe("missions", () => {
 
         missionsRepository = new InMemoryMissionsRepository();
         missions.forEach(async (mission) => await missionsRepository.add(mission));
-        missionsService = new MissionsService(missionsRepository);
+        missionsService = new MissionsService(missionsRepository, new InMemoryBackedMissionsRepository());
     });
 
     describe("data", () => {

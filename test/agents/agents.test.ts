@@ -1,5 +1,4 @@
 import { Agent } from "../../src/agents/Agent";
-import { AgentsRepository } from "../../src/agents/AgentsRepository";
 import { AgentsService } from "../../src/agents/AgentsService";
 import { InvalidAgent } from "../../src/agents/errors/InvalidAgent";
 import { InMemoryAgentsRepository } from "../../src/agents/InMemoryAgentsRepository";
@@ -9,7 +8,7 @@ agents.push(new Agent("solid-snake"));
 agents.push(new Agent("meryl-silverburgh"));
 
 describe("agents", () => {
-    let agentsRepository: AgentsRepository;
+    let agentsRepository: InMemoryAgentsRepository;
     let agentsService: AgentsService;
 
     beforeEach(async () => {

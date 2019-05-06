@@ -2,12 +2,11 @@ import { Agent } from "./Agent";
 import { isAgentValid } from "./AgentPolicies";
 import { AgentsRepository } from "./AgentsRepository";
 import { InvalidAgent } from "./errors/InvalidAgent";
-import { InMemoryAgentsRepository } from "./InMemoryAgentsRepository";
 
 export class AgentsService {
-    private agentsRepository: InMemoryAgentsRepository;
+    private agentsRepository: AgentsRepository;
 
-    constructor(agentsRepository: InMemoryAgentsRepository) {
+    constructor(agentsRepository: AgentsRepository) {
         this.agentsRepository = agentsRepository;
     }
 

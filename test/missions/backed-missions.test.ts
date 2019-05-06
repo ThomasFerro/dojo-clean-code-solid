@@ -3,6 +3,7 @@ import { BackedMission } from "../../src/missions/backedMissions/BackedMission";
 import { BackedMissionsRepository } from "../../src/missions/backedMissions/BackedMissionsRepository";
 import { BackedMissionsService } from "../../src/missions/backedMissions/BackedMissionsService";
 import { InMemoryBackedMissionsRepository } from "../../src/missions/backedMissions/InMemoryBackedMissionsRepository";
+import { InvalidMission } from "../../src/missions/errors/InvalidMission";
 
 describe("backed missions", () => {
     let backedMissionRepository: BackedMissionsRepository;
@@ -30,7 +31,7 @@ describe("backed missions", () => {
 
         backedMissionRepository = new InMemoryBackedMissionsRepository();
         backedMissionService = new BackedMissionsService(backedMissionRepository);
-        backedMissions.forEach(async (mission) => await backedMissionService.addMission(mission));
+        backedMissions.forEach(async (mission) => await backedMissionService.addBackedMission(mission));
     });
 
     it("should provide the list of all backed missions", async () => {
@@ -49,4 +50,16 @@ describe("backed missions", () => {
 
         expect(missionInformation && missionInformation.getBackup()).not.toContain(merylSilverburgh);
     });
+
+    it("should not be able to add a backed mission without a backup", async () => {
+        const tselinoyarskMission = new BackedMission(
+            "",
+            "Tselinoyarsk",
+            solidSnake,
+            [],
+        );
+
+        await expect(backedMissionService.addBackedMission(tselinoyarskMission))
+            .rejects.toEqual(new InvalidMission(tselinoyarskMission));
+    })
 });

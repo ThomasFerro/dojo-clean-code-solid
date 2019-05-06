@@ -15,7 +15,7 @@ export class BackedMissionsService extends MissionsService {
         this.backedMissionsRepository = backedMissionsRepository;
     }
 
-    public async addMission(mission: BackedMission): Promise<boolean> {
+    public async addBackedMission(mission: BackedMission): Promise<boolean> {
         if (!hasBackup(mission)) {
             throw new InvalidMission(mission);
         }
